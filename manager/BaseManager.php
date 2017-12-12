@@ -37,5 +37,30 @@ class BaseManager {
         return $result;
     }
 
+    public function create($model,$data)
+    {
+        $res = ripcord::client($this->url . "/xmlrpc/2/object");
+        $id =  $res->execute_kw($this->db, $this->user_id, $this->password, $model, 'create', $data);
+        return $id;
+    }
+
+    public function edit($model,$data,$id)
+    {
+        $res = ripcord::client($this->url . "/xmlrpc/2/object");
+        $id =  $res->execute_kw($this->db, $this->user_id, $this->password, $model, 'write', $data);
+        // get record name after having changed it
+        $res->execute_kw($this->db, $this->user_id, $this->password, $model, 'name_get', array(array($id)));
+        return $id;
+    }
+
+    public function delete($model,$id)
+    {
+        $res = ripcord::client($this->url . "/xmlrpc/2/object");
+         $res->execute_kw($this->db, $this->user_id, $this->password, $model, 'unlink', array(array($id)));
+        // check if the deleted record is still in the database
+        $id = $res->execute_kw($this->db, $this->user_id, $this->password, $model, 'search',array(array(array('id', '=', $id))));
+        return $id;
+    }
+
 
 }

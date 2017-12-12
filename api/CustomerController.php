@@ -17,6 +17,7 @@ $METHOD='';
 if(@isset($_REQUEST['action'])) $METHOD=htmlentities($_REQUEST['action']);
 
 //Initialise variables
+$id = null;
 $name = null;
  $email= null;
  $title= null;
@@ -24,10 +25,30 @@ $name = null;
  $website= null;
  $birthdate= null;
 
-$user = new CustomerManager();
+
 
 //get all post variable
+$id =htmlentities(@$_REQUEST['id']);
 $name =htmlentities(@$_REQUEST['name']);
+$email =htmlentities(@$_REQUEST['email']);
+$title =htmlentities(@$_REQUEST['title']);
+$phone =htmlentities(@$_REQUEST['phone']);
+$website =htmlentities(@$_REQUEST['website']);
+$birthdate =htmlentities(@$_REQUEST['birthdate']);
+
+//build objects
+$user = new CustomerManager();
+$customer = new Customer();
+
+$customer->setId(intval($id));
+$customer->setName($name);
+$customer->setEmail($email);
+$customer->setTitle($title);
+$customer->setPhone($phone);
+$customer->setWebsite($website);
+$customer->setBirthdate($birthdate);
+
+
 
 
 switch($METHOD){
@@ -40,7 +61,13 @@ switch($METHOD){
     case 'add_customer':
         //POST
         //http://localhost:1180/odooApiXmlRpc/api/CustomerController.php?action=add_customer
-        $user->addCustomer();
+        $user->addCustomer($customer);
+        break;
+
+    case 'put':
+        //POST
+        //http://localhost:1180/odooApiXmlRpc/api/CustomerController.php?action=put
+        $user->edit($customer);
         break;
 
     case 'all_customer':
@@ -51,6 +78,9 @@ switch($METHOD){
     case 'edit_customer':
 
         $user->editCustomer();
+        break;
+    case 'delete':
+        $user->delete($customer->getId());
         break;
     default:
 

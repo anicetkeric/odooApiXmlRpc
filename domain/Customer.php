@@ -8,6 +8,8 @@
  */
 class Customer
 {
+
+    private $id;
     private $name;
     private $email;
     private $title;
@@ -116,6 +118,22 @@ class Customer
     public function setBirthdate($birthdate)
     {
         $this->birthdate = $birthdate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
 
