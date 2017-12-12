@@ -7,7 +7,8 @@
  */
 
 require_once  $_SERVER['DOCUMENT_ROOT'].'/odooApiXmlRpc/helpers/ripcord.php';
-require_once  $_SERVER['DOCUMENT_ROOT'].'/odooApiXmlRpc/manager/Customer.php';
+require_once  $_SERVER['DOCUMENT_ROOT'].'/odooApiXmlRpc/manager/CustomerManager.php';
+require_once  $_SERVER['DOCUMENT_ROOT'].'/odooApiXmlRpc/domain/Customer.php';
 
 
 
@@ -15,11 +16,15 @@ $METHOD='';
 //Action
 if(@isset($_REQUEST['action'])) $METHOD=htmlentities($_REQUEST['action']);
 
-//Initialise variable
+//Initialise variables
 $name = null;
+ $email= null;
+ $title= null;
+ $phone= null;
+ $website= null;
+ $birthdate= null;
 
-
-$user = new Customer();
+$user = new CustomerManager();
 
 //get all post variable
 $name =htmlentities(@$_REQUEST['name']);
