@@ -13,17 +13,23 @@ require_once  $_SERVER['DOCUMENT_ROOT'].'/odooApiXmlRpc/manager/Customer.php';
 
 $METHOD='';
 //Action
-if(@isset($_REQUEST['action'])) $METHOD=$_REQUEST['action'];
+if(@isset($_REQUEST['action'])) $METHOD=htmlentities($_REQUEST['action']);
 
-//Comment the Sales section if working with Customers module and vice versa
+//Initialise variable
+$name = null;
+
+
 $user = new Customer();
+
+//get all post variable
+$name =htmlentities(@$_REQUEST['name']);
 
 
 switch($METHOD){
     case 'get':
        // POST
         //http://localhost:1180/odooApiXmlRpc/api/CustomerController.php?action=get
-        $user->getCustomer();
+        $user->getCustomer($name);
         break;
 
     case 'add_customer':
@@ -34,7 +40,7 @@ switch($METHOD){
 
     case 'all_customer':
     //http://localhost:1180/odooApiXmlRpc/api/CustomerController.php?action=all_customer
-        $user->listAll();
+        $user->getAllCustommers();
         break;
 
     case 'edit_customer':

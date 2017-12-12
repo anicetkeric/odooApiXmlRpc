@@ -2,8 +2,10 @@
 
 require_once  $_SERVER['DOCUMENT_ROOT'].'/odooApiXmlRpc/helpers/ripcord.php';
 require_once  $_SERVER['DOCUMENT_ROOT'].'/odooApiXmlRpc/manager/BaseManager.php';
+require_once  $_SERVER['DOCUMENT_ROOT'].'/odooApiXmlRpc/helpers/Response.php';
 
-class Customer  {
+
+class Customer extends Response  {
 
     private $odoo;
 
@@ -39,25 +41,23 @@ class Customer  {
     }
 
 
-    function getCustomer() {
+   public function getCustomer($name) {
 
-        $name = $_POST['name'];
+        $criteria=array(array(array('customer', '=', true), array('name', '=', $name)));
+        $data= array(
+            'limit' => 1,
+            'fields' => array(
+                'birthdate',
+                'phone',
+                'function',
+                'name',
+                'email',
+                'address',
+                'website',
+            ));
 
-        $models = ripcord::client($this->odoo->url . "/xmlrpc/2/object");
-
-        $client = $models->execute_kw($this->odoo->db, $this->odoo->user_id, $this->odoo->password, 'res.partner', 'search_read', array(array(array('customer', '=', true), array('name', '=', $name))), array(
-                    'limit' => 1,
-                    'fields' => array(
-                        'birthdate',
-                        'phone',
-                        'function',
-                        'name',
-                        'email',
-                        'address',
-                        'website')));
-
-
-        self::response($client);
+        $customers = $this->odoo->search_read('res.partner',$criteria,$data);
+        $this->response($customers,200,true);
     }
 
     function addCustomer() {
@@ -88,14 +88,14 @@ class Customer  {
                         'website')));
 
 
-        self::response($client);
+        $this->response($client,200,true);
     }
 
-    function listAll() {
 
-        $models = ripcord::client($this->odoo->url . "/xmlrpc/2/object");
+  public function getAllCustommers() {
 
-        $client = $models->execute_kw($this->odoo->db, $this->odoo->user_id, $this->odoo->password, 'res.partner', 'search_read', array(array(array('customer', '=', true))), array(
+        $criteria=array(array(array('customer', '=', true)));
+        $data= array(
             'limit' => 100,
             'fields' => array(
                 'birthdate',
@@ -105,14 +105,13 @@ class Customer  {
                 'email',
                 'address',
                 'website',
-        )));
- 
-        self::response($client);
+            ));
+
+        $customers = $this->odoo->search_read('res.partner',$criteria,$data);
+//        var_dump(array(array(array('customer', '=', true))));
+        $this->response($customers,200,true);
+
     }
 
-    function response($client) {
-        header('Content-Type: application/json');
-        echo json_encode($client);
-    }
 
 }

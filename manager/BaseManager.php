@@ -30,7 +30,12 @@ class BaseManager {
         $this->password = DB_PASSWORD;
     }
 
-
+    public function search_read($model, $criteria,$data=null)
+    {
+        $res = ripcord::client($this->url . "/xmlrpc/2/object");
+        $result = $res->execute_kw($this->db, $this->user_id, $this->password, $model, 'search_read', $criteria,$data);
+        return $result;
+    }
 
 
 }
