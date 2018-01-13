@@ -42,14 +42,12 @@ $sales->setUserId($s_id);
 
 switch($METHOD){
 
-
     case 'all':
     //http://localhost:1180/odooApiXmlRpc/api/SalesController.php?action=all
         $s->getAllSalesOrders($name);
         break;
 
     default:
-
         echo 'Error';
         break;
 

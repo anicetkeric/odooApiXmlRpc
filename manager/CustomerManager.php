@@ -16,8 +16,6 @@ class CustomerManager extends Response  {
 
 
 
-
-
    public function getCustomer($name) {
 
         $criteria=array(array(array('customer', '=', true), array('name', '=', $name)));

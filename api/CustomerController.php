@@ -37,7 +37,7 @@ $website =htmlentities(@$_REQUEST['website']);
 $birthdate =htmlentities(@$_REQUEST['birthdate']);
 
 //build objects
-$user = new CustomerManager();
+$manager = new CustomerManager();
 $customer = new Customer();
 
 $customer->setId(intval($id));
@@ -55,33 +55,34 @@ switch($METHOD){
     case 'get':
        // POST
         //http://localhost:1180/odooApiXmlRpc/api/CustomerController.php?action=get
-        $user->getCustomer($name);
+        $manager->getCustomer($name);
         break;
 
     case 'add_customer':
         //POST
         //http://localhost:1180/odooApiXmlRpc/api/CustomerController.php?action=add_customer
-        $user->addCustomer($customer);
+        $manager->addCustomer($customer);
         break;
 
     case 'put':
         //POST
         //http://localhost:1180/odooApiXmlRpc/api/CustomerController.php?action=put
-        $user->edit($customer);
+        $manager->edit($customer);
         break;
 
     case 'all_customer':
     //http://localhost:1180/odooApiXmlRpc/api/CustomerController.php?action=all_customer
-        $user->getAllCustommers();
+        $manager->getAllCustommers();
         break;
 
     case 'edit_customer':
 
-        $user->editCustomer();
+        $manager->editCustomer();
         break;
     case 'delete':
-        $user->delete($customer->getId());
+        $manager->delete($customer->getId());
         break;
+    
     default:
 
         echo 'Error';

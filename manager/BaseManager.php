@@ -37,6 +37,13 @@ class BaseManager {
         return $result;
     }
 
+    public function search($model, $criteria,$data=null)
+    {
+        $res = ripcord::client($this->url . "/xmlrpc/2/object");
+        $result = $res->execute_kw($this->db, $this->user_id, $this->password, $model, 'search', $criteria,$data);
+        return $result;
+    }
+
     public function create($model,$data)
     {
         $res = ripcord::client($this->url . "/xmlrpc/2/object");
@@ -62,5 +69,14 @@ class BaseManager {
         return $id;
     }
 
+    public function read($model,$ids, $fields)
+    {
+        $res = ripcord::client($this->url . "/xmlrpc/2/object");
+        $id =  $res->execute_kw($this->db, $this->user_id, $this->password, $model, 'read', array($ids), array(
+            'fields' => $fields
+        ));
+        return $id;
+
+    }
 
 }
